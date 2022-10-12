@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button, Grid, InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import Form from '../src/components/Form'
@@ -73,9 +74,9 @@ const Login: React.FC = () => {
           </Grid>
 
           <Grid item xs={8} className="w-full flex !p-0 mt-4">
-            <a href="#" className="text-sm md:text-base ml-5">
+            <Link href="#" className="text-sm md:text-base ml-5">
               Esqueci minha senha
-            </a>
+            </Link>
           </Grid>
 
           <Grid item xs={4} className="w-full flex !p-0 mt-4">
@@ -87,7 +88,7 @@ const Login: React.FC = () => {
       </Form>
 
       <div className="flex container w-full items-center justify-center mt-20 mb-20">
-        <a href="/new-account">Ainda não possui uma conta?</a>
+        <Link href="/new-account">Ainda não possui uma conta?</Link>
       </div>
     </div>
   )

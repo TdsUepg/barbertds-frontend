@@ -1,16 +1,26 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button, Grid, InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { useSnackbar } from 'notistack'
 import Form from '../../src/components/Form'
 import Input from '../../src/components/Input'
 
-const Login: React.FC = () => {
+const NewAccount: React.FC = () => {
+  const snackbar = useSnackbar()
   const [showPassword, setShowPassword] = useState(false)
 
   const onSubmit = (data) => {
     if (data.password === data.confirmPassword) {
       console.log('as senhas batem')
+      snackbar.enqueueSnackbar('Cadastro realizado com sucesso!', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'center',
+        },
+      })
     }
   }
 
@@ -121,8 +131,8 @@ const Login: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={4} className="w-full flex !p-0 mt-2 ml-auto">
-            <Button fullWidth type="submit">
+          <Grid item xs={4} className="pb-4 !pl-0 ml-auto">
+            <Button fullWidth type="submit" className="pr-12 pl-12">
               Cadastrar
             </Button>
           </Grid>
@@ -130,10 +140,10 @@ const Login: React.FC = () => {
       </Form>
 
       <div className="flex container w-full items-center justify-center mt-6 mb-20">
-        <a href="/login">Já tenho uma conta</a>
+        <Link href="/">Já tenho uma conta</Link>
       </div>
     </div>
   )
 }
 
-export default Login
+export default NewAccount

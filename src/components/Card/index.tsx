@@ -11,7 +11,6 @@ type Appointment = {
   barber?: {
     name: string
   }
-  value: number
   date?: string
   startTime?: string
   endTime?: string
@@ -20,12 +19,18 @@ type Appointment = {
 interface CardProps {
   icon: React.ReactNode
   title: string
-  value: number
   appointment: Appointment
-  onClick: () => void
+  value: number
+  onClick?: () => void
 }
 
-const Card: React.FC<CardProps> = ({ icon, title, appointment, onClick }) => {
+const Card: React.FC<CardProps> = ({
+  icon,
+  title,
+  appointment,
+  value,
+  onClick,
+}) => {
   return (
     <Container onClick={onClick}>
       <div className="icon-container">{icon}</div>
@@ -62,7 +67,7 @@ const Card: React.FC<CardProps> = ({ icon, title, appointment, onClick }) => {
           )}
 
           <span>
-            <strong>{parseCurrency(appointment.value)}</strong>
+            <strong>{parseCurrency(value)}</strong>
           </span>
 
           {!appointment?.date && (

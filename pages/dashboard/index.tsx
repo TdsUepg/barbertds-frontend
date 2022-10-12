@@ -5,22 +5,25 @@ import { ContentCut } from '@mui/icons-material'
 
 const Dashboard: React.FC = () => {
   const appointment = {
-    // barber: {
-    //   name: 'Miguel Angel',
-    // },
+    client: {
+      name: 'Miguel Angelo',
+    },
+    barber: {
+      name: 'Miguel Angel',
+    },
     serviceName: 'Corte de cabelo',
-    // date: '2022-05-14',
-    // startTime: '16:30',
-    // endTime: '17:00',
-    value: 2550,
+    date: '2022-05-14',
+    startTime: '16:30',
+    endTime: '17:00',
+    value: 3500,
   }
 
   return (
-    <div className="w-full container flex flex-col items-center pt-12">
+    <div className="w-full flex flex-col items-center pt-12">
       <Card
         icon={<ContentCut />}
         title={appointment.serviceName}
-        value={2450}
+        value={appointment.value}
         appointment={appointment}
         onClick={() => {
           console.log('CAVALO')

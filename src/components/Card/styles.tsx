@@ -5,12 +5,14 @@ export const Container = styled.button`
   display: flex;
   width: 90%;
   min-height: 100px;
+  height: 1px;
+  max-height: auto;
   border-radius: 20px;
   margin: 12px 0px;
 
   .icon-container {
-    width: 35%;
-    min-height: 100px;
+    width: 30%;
+    height: 100%;
     border-radius: 24px;
     background: #f2c84b;
     flex-shrink: 0;
@@ -19,8 +21,8 @@ export const Container = styled.button`
     justify-content: center;
 
     svg {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       fill: #000;
     }
   }
@@ -33,33 +35,32 @@ export const Container = styled.button`
     flex-direction: column;
     align-items: flex-start;
 
-    .card-body-barber,
-    .card-body-client,
-    .card-body-value {
-      opacity: 0.5;
-    }
-
     .card-body-value {
       width: 100%;
       margin-top: auto;
+      margin-right: auto;
       margin-bottom: 12px;
       display: flex;
       align-items: flex-end;
 
       span {
-        margin-left: auto;
         margin-right: 16px;
       }
 
       .card-body-appointment {
+        margin-right: auto;
+
         p {
           line-height: 1.2em;
+          text-align: left;
         }
       }
 
       .card-body-schedule {
         display: flex;
+        margin-top: 30px;
         margin-left: auto;
+        color: #f2c84b;
       }
     }
   }
