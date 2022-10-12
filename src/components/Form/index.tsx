@@ -7,19 +7,19 @@ const Form: React.FC = ({ defaultValues, children, onSubmit }) => {
 
   return (
     <FormProvider {...methods}>
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {React.Children.map(children, child => {
-        return child.props.name
-          ? React.createElement(child.type, {
-              ...{
-                ...child.props,
-                register: methods.register,
-                key: child.props.name
-              }
-            })
-          : child;
-       })}
-    </form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {React.Children.map(children, child => {
+          return child.props.name
+            ? React.createElement(child.type, {
+                ...{
+                  ...child.props,
+                  register: methods.register,
+                  key: child.props.name
+                }
+              })
+            : child;
+        })}
+      </form>
     </FormProvider>
   );
 }

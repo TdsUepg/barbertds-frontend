@@ -1,9 +1,47 @@
-import React from 'react';
-
+import React from 'react'
+import Card from '../../src/components/Card'
+import { ContentCut } from '@mui/icons-material'
 // import { Container } from './styles';
 
-const dashboard: React.FC = () => {
-  return <div />;
+const Dashboard: React.FC = () => {
+  const appointment = {
+    // barber: {
+    //   name: 'Miguel Angel',
+    // },
+    serviceName: 'Corte de cabelo',
+    // date: '2022-05-14',
+    // startTime: '16:30',
+    // endTime: '17:00',
+    value: 2550,
+  }
+
+  return (
+    <div className="w-full container flex flex-col items-center pt-12">
+      <Card
+        icon={<ContentCut />}
+        title={appointment.serviceName}
+        value={2450}
+        appointment={appointment}
+        onClick={() => {
+          console.log('CAVALO')
+        }}
+      />
+
+      <Card
+        icon={<ContentCut />}
+        title="Barba"
+        value={2450}
+        appointment={appointment}
+      />
+
+      <Card
+        icon={<ContentCut />}
+        title="Cabelo + Barba"
+        value={2450}
+        appointment={appointment}
+      />
+    </div>
+  )
 }
 
-export default dashboard;
+export default Dashboard
