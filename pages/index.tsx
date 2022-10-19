@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button, Grid, InputAdornment, IconButton } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid'
+import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Form from '../src/components/Form'
 import Input from '../src/components/Input'
 
@@ -58,7 +62,7 @@ const Login: React.FC = () => {
           <Grid item xs={12} className="pb-4">
             <Input
               label="Senha"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               name="password"
               rules={{
                 required: {
@@ -68,13 +72,25 @@ const Login: React.FC = () => {
                 shouldUnregister: true,
               }}
               InputProps={{
-                endAdornment: <></>,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      className="!bg-transparent"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
           </Grid>
 
           <Grid item xs={8} className="w-full flex !p-0 mt-4">
-            <Link href="#" className="text-sm md:text-base ml-5">
+            <Link href="/forgot-password" className="text-sm md:text-base ml-5">
               Esqueci minha senha
             </Link>
           </Grid>

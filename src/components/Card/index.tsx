@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowRight } from '@mui/icons-material'
+import ArrowRight from '@mui/icons-material/ArrowRight'
 import formatDate from '../../utils/formatDate'
 import parseCurrency from '../../utils/parseCurrency'
 import { Container } from './styles'
@@ -19,7 +19,7 @@ type Appointment = {
 interface CardProps {
   icon: React.ReactNode
   title: string
-  appointment: Appointment
+  appointment?: Appointment
   value: number
   onClick?: () => void
 }
@@ -40,7 +40,7 @@ const Card: React.FC<CardProps> = ({
           <strong>{title}</strong>
         </p>
 
-        {appointment.barber && (
+        {appointment?.barber && (
           <div className="card-body-barber">
             <p>
               <strong>Barbeiro:</strong> {appointment.barber.name}
@@ -48,7 +48,7 @@ const Card: React.FC<CardProps> = ({
           </div>
         )}
 
-        {appointment.client && (
+        {appointment?.client && (
           <div className="card-body-client">
             <p>
               <strong>Cliente:</strong> {appointment.client.name}

@@ -1,48 +1,65 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import Link from 'next/link'
 import Card from '../../src/components/Card'
-import { ContentCut } from '@mui/icons-material'
-// import { Container } from './styles';
+import ContentCut from '@mui/icons-material/ContentCut'
+import api from '../../src/api'
+import { Service } from './types'
 
 const Dashboard: React.FC = () => {
-  const appointment = {
-    client: {
-      name: 'Miguel Angelo',
-    },
-    barber: {
-      name: 'Miguel Angel',
-    },
-    serviceName: 'Corte de cabelo',
-    date: '2022-05-14',
-    startTime: '16:30',
-    endTime: '17:00',
-    value: 3500,
-  }
+  const [isLoading, setIsLoading] = useState(false)
+  const [services, setServices] = useState<Service[]>([])
+
+  const fetchServices = useCallback(async () => {}, [])
+
+  useEffect(() => {
+    setIsLoading(true)
+
+    const fetchServices = async () => {
+      const response = await api.get('/service')
+
+      if (response.data) {
+        setServices(response.data)
+      }
+    }
+
+    fetchServices().catch((err) => console.log(err))
+
+    setIsLoading(false)
+  }, [])
 
   return (
-    <div className="w-full flex flex-col items-center pt-12">
-      <Card
-        icon={<ContentCut />}
-        title={appointment.serviceName}
-        value={appointment.value}
-        appointment={appointment}
-        onClick={() => {
-          console.log('CAVALO')
-        }}
-      />
+    <div className="w-full flex flex-col items-center p-6">
+      <div className="w-full flex justify-end">
+        <Link href="/">
+          <span className="text-xl text-[#f2c84b]">Sair</span>
+        </Link>
+      </div>
 
-      <Card
-        icon={<ContentCut />}
-        title="Barba"
-        value={2450}
-        appointment={appointment}
-      />
+      <div className="w-full flex flex-col items-start pb-8">
+        <h2 className="text-3xl">
+          <strong>Olá, João!</strong>
+        </h2>
+        <p className="pt-2">Qual serviço você deseja agendar?</p>
+      </div>
 
-      <Card
-        icon={<ContentCut />}
-        title="Cabelo + Barba"
-        value={2450}
-        appointment={appointment}
-      />
+      {services.map((service) => (
+        <Card
+          icon={<ContentCut />}
+          title={service.name}
+          value={service.value}
+          onClick={() => {
+            console.log('CAVALO')
+          }}
+        />
+      ))}
+
+      <div className="mt-8">
+        <Link href="/dashboard/patient-schedule">
+          <span className="font-bold text-[#f2c84b]">
+            Ver meus agendamentos
+          </span>
+        </Link>
+      </div>
     </div>
   )
 }
