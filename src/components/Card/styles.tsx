@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 export const Container = styled.button`
   background: #292929;
   display: flex;
-  width: 90%;
+  width: 100%;
   min-height: 100px;
   height: 1px;
   max-height: auto;
