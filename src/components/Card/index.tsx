@@ -70,7 +70,7 @@ const Card: React.FC<CardProps> = ({
             <strong>{parseCurrency(value)}</strong>
           </span>
 
-          {!appointment?.date && (
+          {!appointment && (
             <div className="card-body-schedule">
               <p>Agendar</p>
               <ArrowRight />

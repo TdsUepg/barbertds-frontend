@@ -1,27 +1,36 @@
-import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import React, { ReactNode, ReactElement } from 'react'
+import {
+  useForm,
+  FormProvider,
+  FieldValues,
+  UseFormProps,
+  SubmitHandler,
+} from 'react-hook-form'
 
-const Form: React.FC = ({ defaultValues, children, onSubmit }) => {
-  const methods = useForm({ defaultValues });
-  const { handleSubmit } = methods;
+interface FormProperties<T extends FieldValues> extends UseFormProps<T> {
+  id: string
+  onSubmit: SubmitHandler<T>
+  children: ReactNode
+  className?: string
+}
+
+function Form<T extends FieldValues>({
+  id,
+  defaultValues,
+  children,
+  onSubmit,
+  className,
+}: FormProperties<T>): ReactElement {
+  const methods = useForm({ defaultValues })
+  const { handleSubmit } = methods
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {React.Children.map(children, child => {
-          return child.props.name
-            ? React.createElement(child.type, {
-                ...{
-                  ...child.props,
-                  register: methods.register,
-                  key: child.props.name
-                }
-              })
-            : child;
-        })}
+      <form id={id} onSubmit={handleSubmit(onSubmit)} className={className}>
+        {children}
       </form>
     </FormProvider>
-  );
+  )
 }
 
-export default Form;
+export default Form

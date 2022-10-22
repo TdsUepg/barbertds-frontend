@@ -8,14 +8,21 @@ import IconButton from '@mui/material/IconButton'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useSnackbar } from 'notistack'
-import Form from '../../src/components/Form'
-import Input from '../../src/components/Input'
+import Form from 'components/Form'
+import Input from 'components/Input'
+
+type NewAccountInput = {
+  name: string
+  email: string
+  password: string
+  confirmPassword: string
+}
 
 const NewAccount: React.FC = () => {
   const snackbar = useSnackbar()
   const [showPassword, setShowPassword] = useState(false)
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: NewAccountInput) => {
     if (data.password === data.confirmPassword) {
       console.log('as senhas batem')
       snackbar.enqueueSnackbar('Cadastro realizado com sucesso!', {
@@ -53,7 +60,7 @@ const NewAccount: React.FC = () => {
         <h1 className="text-xl font-bold">Criar sua conta</h1>
       </div>
 
-      <Form onSubmit={onSubmit}>
+      <Form<NewAccountInput> id="new-account-form" onSubmit={onSubmit}>
         <Grid
           container
           spacing={2}
@@ -74,7 +81,7 @@ const NewAccount: React.FC = () => {
               }}
               validate={{
                 isEmail: (value: string) => {
-                  if (!value.match('@')) return null
+                  if (!value.match('@')) return undefined
                 },
               }}
             />
@@ -93,7 +100,7 @@ const NewAccount: React.FC = () => {
               }}
               validate={{
                 isEmail: (value: string) => {
-                  if (!value.match('@')) return null
+                  if (!value.match('@')) return undefined
                 },
               }}
             />
@@ -101,7 +108,6 @@ const NewAccount: React.FC = () => {
 
           <Grid item xs={12} className="pb-4 !pl-0">
             <Input
-              label="Senha"
               type="password"
               name="password"
               rules={{
@@ -111,6 +117,7 @@ const NewAccount: React.FC = () => {
                 },
                 shouldUnregister: true,
               }}
+              label="Senha"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -130,7 +137,6 @@ const NewAccount: React.FC = () => {
 
           <Grid item xs={12} className="pb-4 !pl-0">
             <Input
-              label="Confirmar Senha"
               type="password"
               name="confirmPassword"
               rules={{
@@ -140,19 +146,22 @@ const NewAccount: React.FC = () => {
                 },
                 shouldUnregister: true,
               }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              label="Confirmar Senha"
+              inputProps={{
+                InputProps: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
           </Grid>
