@@ -62,9 +62,11 @@ export const theme = createTheme({
           color: '#000 !important',
           backgroundColor: '#f2c84b !important',
           borderRadius: '12px !important',
-        },
-        disabled: {
-          opacity: '0.4 !important',
+
+          '&.Mui-disabled': {
+            backgroundColor: '#b5a165 !important',
+            opacity: '0.4 !important',
+          },
         },
       },
     },

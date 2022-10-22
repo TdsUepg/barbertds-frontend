@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { useRouter } from 'next/router'
-import { useFormContext, useWatch } from 'react-hook-form'
+// import { useFormContext, useWatch } from 'react-hook-form'
+import ArrowBack from '@mui/icons-material/ArrowBack'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Skeleton from '@mui/material/Skeleton'
@@ -72,6 +73,9 @@ const NewAppointment: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col items-center p-6">
+      <button onClick={() => router.push('/dashboard')}>
+        <ArrowBack />
+      </button>
       {service?.name}
 
       <div className="w-full flex flex-col items-center">
