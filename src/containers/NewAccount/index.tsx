@@ -108,6 +108,7 @@ const NewAccount: React.FC = () => {
 
           <Grid item xs={12} className="pb-4 !pl-0">
             <Input
+              label="Senha"
               type="password"
               name="password"
               rules={{
@@ -117,7 +118,11 @@ const NewAccount: React.FC = () => {
                 },
                 shouldUnregister: true,
               }}
-              label="Senha"
+              // validate={{
+              //   passwordMatch: (value: string) => {
+              //     if (!value.match('@')) return undefined
+              //   },
+              // }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -137,6 +142,7 @@ const NewAccount: React.FC = () => {
 
           <Grid item xs={12} className="pb-4 !pl-0">
             <Input
+              label="Confirmar Senha"
               type="password"
               name="confirmPassword"
               rules={{
@@ -146,7 +152,11 @@ const NewAccount: React.FC = () => {
                 },
                 shouldUnregister: true,
               }}
-              label="Confirmar Senha"
+              // validate={{
+              //   passwordMatch: (value: string) => {
+              //     if (!value.match('@')) return undefined
+              //   },
+              // }}
               inputProps={{
                 InputProps: {
                   endAdornment: (

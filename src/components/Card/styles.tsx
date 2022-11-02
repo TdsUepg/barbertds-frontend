@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const Container = styled.button`
-  background: #292929;
+  background-color: #292929 !important;
   display: flex;
   width: 100%;
   min-height: 100px;

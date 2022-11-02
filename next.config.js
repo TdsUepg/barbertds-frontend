@@ -10,6 +10,16 @@ const nextConfig = {
       transform: '@mui/icons-material/{{ matches.[1] }}/{{member}}',
     },
   },
+  images: {
+    domains: ['firebasestorage.googleapis.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname:
+          'firebasestorage.googleapis.com/v0/b/teste-cf0ac.appspot.com/o/',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig

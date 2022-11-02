@@ -8,9 +8,7 @@ export type AppointmentContextType = {
 
 const AppointmentContext = createContext<AppointmentContextType | null>(null)
 
-const AppointmentProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
+const AppointmentProvider = ({ children }: React.PropsWithChildren) => {
   const [service, setService] = useState<IService | null>(null)
 
   return (

@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Router from 'next/router'
+import { useSnackbar } from 'notistack'
+import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
 import InputAdornment from '@mui/material/InputAdornment'
+import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Form from 'components/Form'
 import Input from 'components/Input'
+import api from 'api'
+import { AuthContext } from 'contexts/AuthContext'
 
 interface ILoginForm {
   email: string
@@ -16,10 +21,30 @@ interface ILoginForm {
 }
 
 const Login: React.FC = () => {
+  const { signIn } = useContext(AuthContext)
+  const snackbar = useSnackbar()
+  const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
 
-  const onSubmit = (data: ILoginForm) => {
-    console.log(data)
+  const onSubmit = async (data: ILoginForm) => {
+    setIsLoading(true)
+    setSubmitError(false)
+
+    await signIn(data)
+      .then(() => {
+        snackbar.enqueueSnackbar('Login realizado com sucesso!', {
+          variant: 'success',
+        })
+
+        Router.push('/dashboard')
+      })
+      .catch(() => {
+        setSubmitError(true)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const handleClickShowPassword = () => {
@@ -43,12 +68,19 @@ const Login: React.FC = () => {
         />
       </div>
 
+      {submitError && (
+        <div className="rounded-[16px] px-[24px] py-[16px] mb-4 flex items-center">
+          <Alert severity="error">Email ou senha estão errados!</Alert>
+        </div>
+      )}
+
       <Form<ILoginForm> id="login-form" onSubmit={onSubmit}>
         <Grid container spacing={2} alignItems="center" justifyContent="center">
           <Grid item xs={12} className="pb-4">
             <Input
               label="Email"
               name="email"
+              disabled={isLoading}
               rules={{
                 required: {
                   value: true,
@@ -69,6 +101,7 @@ const Login: React.FC = () => {
               label="Senha"
               type={showPassword ? 'text' : 'password'}
               name="password"
+              disabled={isLoading}
               rules={{
                 required: {
                   value: true,
@@ -96,8 +129,11 @@ const Login: React.FC = () => {
             />
           </Grid>
 
-          <Grid item xs={8} className="w-full flex !p-0 mt-4">
-            <Link href="/forgot-password" className="text-sm md:text-base ml-5">
+          <Grid item xs={8} className="w-full flex mt-4">
+            <Link
+              href="/forgot-password"
+              className="text-sm md:text-base ml-5 pl-[16px]"
+            >
               Esqueci minha senha
             </Link>
           </Grid>

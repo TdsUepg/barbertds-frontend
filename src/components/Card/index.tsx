@@ -29,10 +29,14 @@ const Card: React.FC<CardProps> = ({
   title,
   appointment,
   value,
-  onClick,
+  onClick = undefined,
 }) => {
   return (
-    <Container onClick={onClick}>
+    <Container
+      type="button"
+      onClick={onClick}
+      style={{ cursor: !!onClick ? 'pointer' : 'default' }}
+    >
       <div className="icon-container">{icon}</div>
 
       <div className="card-body-container">
