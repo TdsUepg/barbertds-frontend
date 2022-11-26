@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-// import { useFormContext, useWatch } from 'react-hook-form'
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
@@ -16,6 +15,7 @@ import { AppointmentContext } from 'contexts/AppointmentContext'
 import type { AppointmentContextType } from 'contexts/AppointmentContext'
 import type { Barber, Service } from '../types'
 import { AuthContext } from 'contexts/AuthContext'
+import { response } from 'express'
 
 const placeholderImage =
   'https://firebasestorage.googleapis.com/v0/b/teste-cf0ac.appspot.com/o/placeholder.jpg?alt=media&token=a2bdeebe-2e17-4b28-9edb-1220ab549aa5'
@@ -45,7 +45,7 @@ const NewAppointment: React.FC = () => {
       setIsLoading(true)
 
       const fetchBarbersByService = async () => {
-        const response = await api.get(`/barber/service/${service.id}`)
+        const response = await api().get(`/barber/service/${service.id}`)
 
         if (response.data) {
           setBarbers(response.data.barbers)
@@ -65,15 +65,22 @@ const NewAppointment: React.FC = () => {
     }
   }, [])
 
-  const handleSubmit = (data: NewAppointmentForm) => {
+  const handleSubmit = async (data: NewAppointmentForm) => {
     const formData = {
+      ...data,
       barber: selectedBarber as Barber,
       service: service as Service,
       client: user,
-      ...data,
+      date: new Date(data.date).toISOString().substring(0, 10),
     }
 
-    console.log('form data', formData)
+    const response = await api().post('/appointment', formData)
+
+    if (response.data) {
+      snackbar.enqueueSnackbar('Serviço agendado!', { variant: 'success' })
+    } else {
+      snackbar.enqueueSnackbar('Houve um erro interno', { variant: 'error' })
+    }
 
     router.push('/dashboard')
   }
@@ -90,26 +97,36 @@ const NewAppointment: React.FC = () => {
 
         <div className="w-full flex flex-col items-center">
           {!barbers.length && isLoading && (
-            <div className="w-full mb-[20px]">
-              <Skeleton
-                variant="rounded"
-                animation="wave"
-                className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
-                width="100%"
-                height={160}
-              />
-              <Skeleton
-                variant="rounded"
-                animation="wave"
-                className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
-                width="100%"
-                height={160}
-              />
-            </div>
+            <>
+              <div className="font-bold mt-4 self-start">
+                1 - Selecione um profissional
+              </div>
+              <div className="w-full mb-[20px]">
+                <Skeleton
+                  variant="rounded"
+                  animation="wave"
+                  className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
+                  width="100%"
+                  height={160}
+                />
+                <Skeleton
+                  variant="rounded"
+                  animation="wave"
+                  className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
+                  width="100%"
+                  height={160}
+                />
+              </div>
+            </>
           )}
 
           <div className="w-full mb-[20px]">
-            <div className="font-bold mt-4">1 - Selecione um barbeiro</div>
+            {!isLoading && (
+              <div className="font-bold mt-4">
+                1 - Selecione um profissional
+              </div>
+            )}
+
             {barbers &&
               barbers.map((barber) => (
                 <button
@@ -168,6 +185,8 @@ const NewAppointment: React.FC = () => {
                 options={[
                   { name: 'Selecione uma opção', value: '' },
                   { name: '14/05/2022', value: '14/05/2022' },
+                  { name: '21/11/2022', value: '21/11/2022' },
+                  { name: '22/11/2022', value: '22/11/2022' },
                 ]}
               />
             </Grid>

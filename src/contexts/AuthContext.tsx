@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react'
-import { setCookie, parseCookies } from 'nookies'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import api from 'api'
 
 type SignInData = {
@@ -21,11 +21,12 @@ type User = {
   name: string
 }
 
-type AuthContextType = {
+export type AuthContextType = {
   isAuthenticated: boolean
-  user: User
-  setUser: (user: User) => void
+  user: User | null
+  setUser: (user: User | null) => void
   signIn: (data: SignInData) => Promise<void>
+  signOut: () => void
 }
 
 export const AuthContext = createContext({} as AuthContextType)
@@ -35,17 +36,33 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const isAuthenticated = !!user
 
   useEffect(() => {
-    const { 'nextauth.token': token } = parseCookies()
+    const {
+      'nextauth.token': token,
+      'nextauth.role': role,
+      'nextauth.email': email,
+    } = parseCookies()
 
     if (token) {
-      api.get('/client').then((response) => {
-        setUser(response.data.user)
-      })
+      if (role === 'client') {
+        api()
+          .get(`/client/${email}`)
+          .then((response) => {
+            setUser(response.data.user)
+          })
+      }
+
+      if (role === 'barber') {
+        api()
+          .get(`/barber/${email}`)
+          .then((response) => {
+            setUser(response.data.user)
+          })
+      }
     }
   }, [])
 
   async function signIn({ email, password }: SignInData) {
-    const { data }: SignInResponse = await api.post('/user/login', {
+    const { data }: SignInResponse = await api().post('/user/login', {
       email,
       password,
     })
@@ -55,16 +72,38 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         maxAge: 60 * 60 * 1, // 1 hour
       })
 
-      api.defaults.headers['Authorization'] = `Bearer ${data.token}`
+      api().defaults.headers['Authorization'] = `Bearer ${data.token}`
 
       setCookie(undefined, 'nextauth.role', data.role)
 
-      setUser(data.user)
+      setCookie(undefined, 'nextauth.email', email)
+
+      if (data.token) {
+        if (data.role === 'client') {
+          const response = await api().get(`/client/${email}`)
+
+          setUser(response.data)
+        }
+
+        if (data.role === 'barber') {
+          const response = await api().get(`/barber/${email}`)
+
+          setUser(response.data)
+        }
+      }
     }
   }
 
+  function signOut() {
+    destroyCookie(undefined, 'nextauth.role')
+    destroyCookie(undefined, 'nextauth.token')
+    destroyCookie(undefined, 'nextauth.email')
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, signIn }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, setUser, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   )

@@ -8,6 +8,8 @@ import { AppointmentContext } from 'contexts/AppointmentContext'
 import type { AppointmentContextType } from 'contexts/AppointmentContext'
 import Card from 'components/Card'
 import type { Service } from './types'
+import { AuthContext } from 'contexts/AuthContext'
+import type { AuthContextType } from 'contexts/AuthContext'
 
 interface DashBoardProperties {
   data: {
@@ -19,6 +21,7 @@ const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
   const snackbar = useSnackbar()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
+  const { user, signOut } = useContext(AuthContext) as AuthContextType
   const { setService } = useContext(
     AppointmentContext,
   ) as AppointmentContextType
@@ -38,13 +41,20 @@ const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
       <div className="max-w-[500px] w-full flex flex-col items-center">
         <div className="w-full flex justify-end">
           <Link href="/">
-            <span className="text-xl text-[#f2c84b]">Sair</span>
+            <span
+              className="text-xl text-[#f2c84b]"
+              onClick={() => {
+                signOut()
+              }}
+            >
+              Sair
+            </span>
           </Link>
         </div>
 
         <div className="w-full flex flex-col items-start pb-8">
           <h2 className="text-3xl">
-            <strong>Olá, João!</strong>
+            <strong>Olá, {user?.name}!</strong>
           </h2>
           <p className="pt-2">Qual serviço você deseja agendar?</p>
         </div>
@@ -72,26 +82,49 @@ const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
               width={320}
               height={100}
             />
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+              width={320}
+              height={100}
+            />
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+              width={320}
+              height={100}
+            />
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+              width={320}
+              height={100}
+            />
           </>
         )}
 
-        {!isLoading &&
-          data.services &&
-          data.services.length > 0 &&
-          data.services.map((service) => (
-            <Card
-              key={service.name}
-              icon={<ContentCut />}
-              title={service.name}
-              value={service.value}
-              onClick={() => {
-                setService(service)
-                router.push('/dashboard/new-appointment')
-              }}
-            />
-          ))}
+        <div className="w-full flex-grow overflow-y-scroll">
+          {!isLoading &&
+            data.services &&
+            data.services.length > 0 &&
+            data.services.map((service) => (
+              <Card
+                key={service.name}
+                icon={<ContentCut />}
+                title={service.name}
+                value={service.value}
+                onClick={() => {
+                  setService(service)
+                  router.push('/dashboard/new-appointment')
+                }}
+              />
+            ))}
+        </div>
 
-        <div className="mt-8">
+        <div className="flex-shrink-0 pt-2">
           <Link href="/dashboard/appointment">
             <span className="font-bold text-[#f2c84b]">
               Ver meus agendamentos

@@ -9,7 +9,7 @@ import { AppointmentProvider } from 'contexts/AppointmentContext'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={2} dense>
+      <SnackbarProvider maxSnack={2} dense anchorOrigin={{vertical: "bottom", horizontal: "center"}}>
         <AuthProvider>
           <AppointmentProvider>
             <Component {...pageProps} />

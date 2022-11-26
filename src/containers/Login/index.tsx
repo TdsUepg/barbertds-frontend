@@ -12,7 +12,6 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Form from 'components/Form'
 import Input from 'components/Input'
-import api from 'api'
 import { AuthContext } from 'contexts/AuthContext'
 
 interface ILoginForm {
@@ -109,22 +108,20 @@ const Login: React.FC = () => {
                 },
                 shouldUnregister: true,
               }}
-              inputProps={{
-                InputProps: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                        className="!bg-transparent"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      className="!bg-transparent"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
             />
           </Grid>

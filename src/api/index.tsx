@@ -1,10 +1,34 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
+import type { NextPageContext, NextApiRequest } from 'next'
+import type { Request } from 'express'
+import { parseCookies } from 'nookies'
 
-const api = axios.create({
-  baseURL: 'http://localhost:3333/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+type ContextType =
+  | Pick<NextPageContext, 'req'>
+  | {
+      req: NextApiRequest
+    }
+  | {
+      req: Request
+    }
+  | null
+  | undefined
+
+const api = (ctx?: ContextType): AxiosInstance => {
+  const { 'nextauth.token': token } = parseCookies(ctx)
+
+  const api = axios.create({
+    baseURL: 'http://localhost:3333/',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (token) {
+    api.defaults.headers['Authorization'] = `Bearer ${token}`
+  }
+
+  return api
+}
 
 export default api
