@@ -72,6 +72,7 @@ const NewAppointment: React.FC = () => {
       service: service as Service,
       client: user,
       date: new Date(data.date).toISOString().substring(0, 10),
+      endTime: data.startTime,
     }
 
     const response = await api().post('/appointment', formData)
@@ -86,8 +87,8 @@ const NewAppointment: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-none container flex items-center justify-center p-10">
-      <div className="w-full max-w-[600px] flex flex-col items-center">
+    <div className="w-full h-screen flex justify-center overflow-hidden">
+      <div className="w-full max-w-[600px] h-full flex flex-col items-center">
         <div className="w-full max-w-none flex items-center justify-start">
           <button type="button" onClick={() => router.push('/dashboard')}>
             <ArrowBack />
@@ -95,7 +96,7 @@ const NewAppointment: React.FC = () => {
           <p className="font-bold text-3xl pl-6">{service?.name}</p>
         </div>
 
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full">
           {!barbers.length && isLoading && (
             <>
               <div className="font-bold mt-4 self-start">
@@ -120,7 +121,7 @@ const NewAppointment: React.FC = () => {
             </>
           )}
 
-          <div className="w-full mb-[20px]">
+          <div className="w-full mb-[20px] overflow-y-scroll">
             {!isLoading && (
               <div className="font-bold mt-4">
                 1 - Selecione um profissional
@@ -160,10 +161,31 @@ const NewAppointment: React.FC = () => {
                   </span>
                 </button>
               ))}
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
+              width="100%"
+              height={160}
+            />
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
+              width="100%"
+              height={160}
+            />
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
+              width="100%"
+              height={160}
+            />
           </div>
         </div>
 
-        <div className="font-bold my-4 mb-6 self-start">
+        <div className="font-bold flex-shrink-0 my-4 mb-6 self-start">
           2 - Selecione um horário
         </div>
 

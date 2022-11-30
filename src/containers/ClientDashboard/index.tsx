@@ -37,8 +37,8 @@ const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
   }, [])
 
   return (
-    <div className="w-full flex flex-col items-center p-4">
-      <div className="max-w-[500px] w-full flex flex-col items-center">
+    <div className="w-full h-screen flex flex-col items-center p-4">
+      <div className="max-w-[500px] w-full h-full flex flex-col items-center">
         <div className="w-full flex justify-end">
           <Link href="/">
             <span
