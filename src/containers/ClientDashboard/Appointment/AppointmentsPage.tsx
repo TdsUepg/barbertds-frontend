@@ -96,10 +96,6 @@ const AppointmentPage: React.FC<AppointmentProperties> = ({ data }) => {
                   endTime: appointment.endTime,
                   startTime: appointment.startTime,
                 }}
-                onClick={() => {
-                  //   setAppointment(appointment)
-                  router.push(`/dashboard/appointment/${appointment.id}`)
-                }}
               />
             ))}
         </div>

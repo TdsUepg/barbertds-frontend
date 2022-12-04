@@ -22,3 +22,7 @@ export interface Appointment {
   endTime: string
   serviceStatus: ServiceStatus
 }
+
+export interface DatePickerValue {
+  $d: Date
+}

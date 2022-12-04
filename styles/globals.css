@@ -32,3 +32,18 @@ a {
 *::-webkit-scrollbar-thumb {
   background: #f2c84b;
 }
+
+.MuiPickersCalendarHeader-label {
+  color: #fff !important;
+}
+
+.PrivatePickersYear-yearButton.Mui-disabled {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 400;
+}
+
+.PrivatePickersYear-yearButton {
+  color: #fff !important;
+  font-weight: 600;
+  background-color: transparent !important;
+}

@@ -5,23 +5,27 @@ import Image from 'next/image'
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
 import Skeleton from '@mui/material/Skeleton'
 import ContentCut from '@mui/icons-material/ContentCut'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import api from 'api'
 import Card from 'components/Card'
 import Form from 'components/Form'
 import Select from 'components/Select'
 import { AppointmentContext } from 'contexts/AppointmentContext'
 import type { AppointmentContextType } from 'contexts/AppointmentContext'
-import type { Barber, Service } from '../types'
+import type { Barber, DatePickerValue, Service } from '../types'
 import { AuthContext } from 'contexts/AuthContext'
-import { response } from 'express'
+import { ptBR } from '@mui/x-date-pickers'
 
 const placeholderImage =
   'https://firebasestorage.googleapis.com/v0/b/teste-cf0ac.appspot.com/o/placeholder.jpg?alt=media&token=a2bdeebe-2e17-4b28-9edb-1220ab549aa5'
 
 interface NewAppointmentForm {
-  date: string
+  date: Date
   startTime: string
 }
 
@@ -33,6 +37,7 @@ const NewAppointment: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [barbers, setBarbers] = useState<Barber[]>([])
   const [selectedBarber, setSelectedBarber] = useState<Barber>()
+  const [date, setDate] = useState<Date>()
 
   useEffect(() => {
     if (!service) {
@@ -71,7 +76,7 @@ const NewAppointment: React.FC = () => {
       barber: selectedBarber as Barber,
       service: service as Service,
       client: user,
-      date: new Date(data.date).toISOString().substring(0, 10),
+      date: date.toISOString().substring(0, 10),
       endTime: data.startTime,
     }
 
@@ -88,7 +93,7 @@ const NewAppointment: React.FC = () => {
 
   return (
     <div className="w-full h-screen flex justify-center overflow-hidden">
-      <div className="w-full max-w-[600px] h-full flex flex-col items-center">
+      <div className="w-full max-w-[600px] h-full flex flex-col items-center px-3 py-3">
         <div className="w-full max-w-none flex items-center justify-start">
           <button type="button" onClick={() => router.push('/dashboard')}>
             <ArrowBack />
@@ -161,27 +166,6 @@ const NewAppointment: React.FC = () => {
                   </span>
                 </button>
               ))}
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
-              width="100%"
-              height={160}
-            />
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
-              width="100%"
-              height={160}
-            />
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              className="!bg-gray-500 opacity-40 my-[20px] !rounded-[20px]"
-              width="100%"
-              height={160}
-            />
           </div>
         </div>
 
@@ -200,17 +184,23 @@ const NewAppointment: React.FC = () => {
         >
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Select
-                label="Data"
-                id="appointment-date-select"
-                name="date"
-                options={[
-                  { name: 'Selecione uma opção', value: '' },
-                  { name: '14/05/2022', value: '14/05/2022' },
-                  { name: '21/11/2022', value: '21/11/2022' },
-                  { name: '22/11/2022', value: '22/11/2022' },
-                ]}
-              />
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                // adapterLocale="pt-BR"
+              >
+                <DatePicker
+                  label="Data"
+                  value={date}
+                  onChange={(newValue: DatePickerValue | null) => {
+                    if (newValue) {
+                      setDate(newValue['$d'])
+                    }
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                  inputFormat="DD/MM/YYYY"
+                  disablePast
+                />
+              </LocalizationProvider>
             </Grid>
 
             <Grid item xs={6}>

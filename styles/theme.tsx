@@ -70,5 +70,20 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: '#fff !important',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#141414 !important',
+          borderRadius: '24px',
+        },
+      },
+    },
   },
 })

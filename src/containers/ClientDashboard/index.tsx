@@ -10,6 +10,8 @@ import Card from 'components/Card'
 import type { Service } from './types'
 import { AuthContext } from 'contexts/AuthContext'
 import type { AuthContextType } from 'contexts/AuthContext'
+import api from 'api'
+import { parseCookies } from 'nookies'
 
 interface DashBoardProperties {
   data: {
@@ -18,10 +20,11 @@ interface DashBoardProperties {
 }
 
 const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
+  const { ['nextauth.email']: email } = parseCookies(null)
   const snackbar = useSnackbar()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
-  const { user, signOut } = useContext(AuthContext) as AuthContextType
+  const { user, signOut, setUser } = useContext(AuthContext) as AuthContextType
   const { setService } = useContext(
     AppointmentContext,
   ) as AppointmentContextType
@@ -34,6 +37,22 @@ const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
     if (data && data.services) {
       setIsLoading(false)
     }
+  }, [])
+
+  useEffect(() => {
+    setIsLoading(true)
+
+    void api()
+      .get(`/client/${email}`)
+      .then((response) => {
+        if (response.data) {
+          setUser(response.data)
+        }
+      })
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false)
+      })
   }, [])
 
   return (
@@ -65,42 +84,21 @@ const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
               variant="rounded"
               animation="wave"
               className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
-              width={320}
+              width="100%"
               height={100}
             />
             <Skeleton
               variant="rounded"
               animation="wave"
               className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
-              width={320}
+              width="100%"
               height={100}
             />
             <Skeleton
               variant="rounded"
               animation="wave"
               className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
-              width={320}
-              height={100}
-            />
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
-              width={320}
-              height={100}
-            />
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
-              width={320}
-              height={100}
-            />
-            <Skeleton
-              variant="rounded"
-              animation="wave"
-              className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
-              width={320}
+              width="100%"
               height={100}
             />
           </>
@@ -122,6 +120,49 @@ const Dashboard: React.FC<DashBoardProperties> = ({ data }) => {
                 }}
               />
             ))}
+
+          {/* <Skeleton
+            variant="rounded"
+            animation="wave"
+            className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+            width="100%"
+            height={100}
+          />
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+            width="100%"
+            height={100}
+          />
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+            width="100%"
+            height={100}
+          />
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+            width="100%"
+            height={100}
+          />
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px]"
+            width="100%"
+            height={100}
+          />
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            className="!bg-gray-500 opacity-40 mt-4 mb-4 !rounded-[20px] w-full"
+            width="100%"
+            height={100}
+          /> */}
         </div>
 
         <div className="flex-shrink-0 pt-2">

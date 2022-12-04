@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         api()
           .get(`/client/${email}`)
           .then((response) => {
-            setUser(response.data.user)
+            setUser(response.data)
           })
       }
 
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
     if (data.token) {
       setCookie(undefined, 'nextauth.token', data.token, {
-        maxAge: 60 * 60 * 1, // 1 hour
+        maxAge: 60 * 60 * 24, // 24 hour
       })
 
       api().defaults.headers['Authorization'] = `Bearer ${data.token}`
