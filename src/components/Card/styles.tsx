@@ -5,16 +5,14 @@ export const Container = styled.button`
   display: flex;
   width: 100%;
   min-height: 100px;
-  height: 1px;
-  max-height: auto;
+  height: auto;
   border-radius: 20px;
   margin: 12px 0px;
 
   .icon-container {
     width: 30%;
     height: 100%;
-    border-radius: 24px;
-    background: #f2c84b;
+    margin: auto;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -23,7 +21,7 @@ export const Container = styled.button`
     svg {
       width: 50px;
       height: 50px;
-      fill: #000;
+      fill: #f2c84b;
     }
   }
 

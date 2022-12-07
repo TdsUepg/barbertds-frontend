@@ -1,5 +1,6 @@
 import type { GetServerSideProps } from 'next/types'
 import { parseCookies } from 'nookies'
+import BarberDashboard from 'containers/BarberDashboard'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { ['nextauth.token']: token, ['nextauth.role']: role } =
@@ -30,6 +31,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 }
 
-export default function Page({ data }) {
-  return <div>teste dashboard barbeiro</div>
+export default function Page() {
+  return <BarberDashboard />
 }

@@ -31,6 +31,7 @@ a {
 
 *::-webkit-scrollbar-thumb {
   background: #f2c84b;
+  border-radius: 8px;
 }
 
 .MuiPickersCalendarHeader-label {

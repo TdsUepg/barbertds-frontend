@@ -5,7 +5,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import InputLabel from '@mui/material/InputLabel'
 import MUISelect from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import type { SelectProps } from '@mui/material/Select'
+import type { SelectProps, SelectChangeEvent } from '@mui/material/Select'
 
 type Option = {
   name: string
@@ -18,6 +18,7 @@ interface SelectProperties extends SelectProps {
   label?: string
   rules?: Record<string, unknown>
   validate?: Validate<string> | Record<string, Validate<string>>
+  onChange?: (event: SelectChangeEvent<any>, child: React.ReactNode) => void
 }
 
 const Select: React.FC<SelectProperties> = ({
@@ -25,7 +26,9 @@ const Select: React.FC<SelectProperties> = ({
   options,
   label,
   rules,
+  placeholder,
   validate,
+  onChange,
   ...props
 }) => {
   const { control, register } = useFormContext()
@@ -45,7 +48,9 @@ const Select: React.FC<SelectProperties> = ({
             name={name}
             value={value}
             label={label}
+            placeholder={placeholder}
             inputRef={ref}
+            onChange={onChange}
             variant="outlined"
             displayEmpty
           >

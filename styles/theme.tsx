@@ -36,7 +36,7 @@ export const theme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          color: '#fff',
+          color: '#fff !important',
           backgroundColor: '#333333 !important',
         },
       },
@@ -44,7 +44,6 @@ export const theme = createTheme({
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          color: '#fff',
           backgroundColor: '#333333',
           borderRadius: '4px',
           padding: '0px 8px',
