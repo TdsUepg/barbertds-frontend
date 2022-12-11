@@ -192,9 +192,9 @@ export default function NewService(): ReactElement {
                   shouldUnregister: true,
                 }}
                 options={[
-                  { name: '90 minutos', value: 90 },
-                  { name: '60 minutos', value: 60 },
-                  { name: '30 minutos', value: 30 },
+                  { name: '90 minutos', value: '90' },
+                  { name: '60 minutos', value: '60' },
+                  { name: '30 minutos', value: '30' },
                 ]}
               />
             </Grid>
