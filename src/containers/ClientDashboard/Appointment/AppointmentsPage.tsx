@@ -8,6 +8,7 @@ import Card from 'components/Card'
 import { AuthContext } from 'contexts/AuthContext'
 import type { AuthContextType } from 'contexts/AuthContext'
 import type { Appointment } from '../types'
+import Icon from 'components/Icon'
 
 interface AppointmentProperties {
   data: {
@@ -87,10 +88,15 @@ const AppointmentPage: React.FC<AppointmentProperties> = ({ data }) => {
             data.appointments.length > 0 &&
             data.appointments.map((appointment) => (
               <Card
-                key={appointment.serviceStatus}
-                icon={<ContentCut />}
-                title={appointment.serviceStatus}
-                value={Number(appointment.endTime)}
+                key={appointment.id}
+                icon={
+                  <Icon
+                    iconName={appointment.service.iconName}
+                    variant="primary"
+                  />
+                }
+                title={appointment.service.name}
+                value={Number(appointment.service.value)}
                 appointment={{
                   date: appointment.date,
                   endTime: appointment.endTime,

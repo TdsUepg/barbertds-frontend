@@ -1,3 +1,5 @@
+import { Icons } from 'components/Icon'
+
 export interface Barber {
   id: string
   name: string
@@ -9,6 +11,7 @@ export interface Service {
   name: string
   value: number
   serviceTime: string
+  iconName: Icons
 }
 
 enum ServiceStatus {
@@ -21,6 +24,7 @@ export interface Appointment {
   date: string
   startTime: string
   endTime: string
+  service: Service
   serviceStatus: ServiceStatus
 }
 

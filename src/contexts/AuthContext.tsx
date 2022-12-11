@@ -82,11 +82,15 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         if (data.role === 'client') {
           const response = await api().get(`/client/${email}`)
 
+          setCookie(undefined, 'nextauth.id', response.data.id)
+
           setUser(response.data)
         }
 
         if (data.role === 'barber') {
           const response = await api().get(`/barber/${email}`)
+
+          setCookie(undefined, 'nextauth.id', response.data.id)
 
           setUser(response.data)
         }
@@ -94,10 +98,11 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     }
   }
 
-  function signOut() {
+  async function signOut() {
     destroyCookie(undefined, 'nextauth.role')
     destroyCookie(undefined, 'nextauth.token')
     destroyCookie(undefined, 'nextauth.email')
+    destroyCookie(undefined, 'nextauth.id')
   }
 
   return (

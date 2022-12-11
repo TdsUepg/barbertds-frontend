@@ -30,7 +30,8 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "inline-react-svg"
     ],
     "rules": {
     "react/react-in-jsx-scope": "off",

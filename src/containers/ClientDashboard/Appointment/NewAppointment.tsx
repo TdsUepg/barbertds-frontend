@@ -24,6 +24,7 @@ import { AuthContext } from 'contexts/AuthContext'
 import sumTimes from 'utils/sumTimes'
 import { format, formatISO } from 'date-fns'
 import { FormHelperText } from '@mui/material'
+import Icon, { Icons } from 'components/Icon'
 
 const placeholderImage =
   'https://firebasestorage.googleapis.com/v0/b/teste-cf0ac.appspot.com/o/placeholder.jpg?alt=media&token=a2bdeebe-2e17-4b28-9edb-1220ab549aa5'
@@ -301,7 +302,9 @@ const NewAppointment: React.FC = () => {
           <div className="font-bold my-4 self-start">3 - Resumo</div>
 
           <Card
-            icon={<ContentCut />}
+            icon={
+              <Icon iconName={service?.iconName as Icons} variant="primary" />
+            }
             appointment={
               service && selectedBarber
                 ? {

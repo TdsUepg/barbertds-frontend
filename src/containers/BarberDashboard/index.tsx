@@ -21,6 +21,7 @@ import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogActions from '@mui/material/DialogActions'
+import Icon from 'components/Icon'
 
 const Dashboard: React.FC = () => {
   const { ['nextauth.email']: email } = parseCookies(null)
@@ -101,7 +102,7 @@ const Dashboard: React.FC = () => {
             <span
               className="text-xl text-[#f2c84b]"
               onClick={() => {
-                signOut()
+                void signOut()
               }}
             >
               Sair
@@ -176,9 +177,14 @@ const Dashboard: React.FC = () => {
             appointments.map((appointment) => (
               <Card
                 key={appointment.id}
-                title={appointment.serviceStatus}
-                value={Number(appointment.startTime)}
-                icon={<ContentCut />}
+                title={appointment.service.name}
+                value={Number(appointment.service.value)}
+                icon={
+                  <Icon
+                    iconName={appointment.service.iconName}
+                    variant="primary"
+                  />
+                }
                 appointment={{
                   date: appointment.date,
                   startTime: appointment.startTime,
@@ -199,7 +205,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         <div className="flex-shrink-0 pt-2">
-          <Link href="/professional-dashboard/services">
+          <Link href="/professional-dashboard/service">
             <span className="font-bold text-[#f2c84b]">Editar serviços</span>
           </Link>
         </div>

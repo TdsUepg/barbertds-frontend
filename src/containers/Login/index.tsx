@@ -13,6 +13,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Form from 'components/Form'
 import Input from 'components/Input'
 import { AuthContext } from 'contexts/AuthContext'
+import { parseCookies } from 'nookies'
 
 interface ILoginForm {
   email: string
@@ -21,6 +22,7 @@ interface ILoginForm {
 
 const Login: React.FC = () => {
   const { signIn } = useContext(AuthContext)
+  const { ['nextauth.role']: role } = parseCookies()
   const snackbar = useSnackbar()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -35,8 +37,6 @@ const Login: React.FC = () => {
         snackbar.enqueueSnackbar('Login realizado com sucesso!', {
           variant: 'success',
         })
-
-        Router.push('/dashboard')
       })
       .catch(() => {
         setSubmitError(true)
@@ -44,6 +44,14 @@ const Login: React.FC = () => {
       .finally(() => {
         setIsLoading(false)
       })
+
+    if (role === 'client') {
+      Router.push('dashboard')
+    }
+
+    if (role === 'barber') {
+      Router.push('professional-dashboard')
+    }
   }
 
   const handleClickShowPassword = () => {
