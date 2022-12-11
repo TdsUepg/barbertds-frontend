@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Router from 'next/router'
@@ -44,14 +44,6 @@ const Login: React.FC = () => {
       .finally(() => {
         setIsLoading(false)
       })
-
-    if (role === 'client') {
-      Router.push('dashboard')
-    }
-
-    if (role === 'barber') {
-      Router.push('professional-dashboard')
-    }
   }
 
   const handleClickShowPassword = () => {
@@ -63,6 +55,16 @@ const Login: React.FC = () => {
   ) => {
     event.preventDefault()
   }
+
+  useEffect(() => {
+    if (role === 'client') {
+      Router.push('dashboard')
+    }
+
+    if (role === 'barber') {
+      Router.push('professional-dashboard')
+    }
+  }, [role])
 
   return (
     <div className="w-full max-w-none max-h-screen h-screen flex flex-col container items-center justify-center m-0 p-10">

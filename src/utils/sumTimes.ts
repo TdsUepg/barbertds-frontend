@@ -3,7 +3,10 @@
  * @param initialTime a value in 00:00 notation
  * @param addTime a value between 90, 60, 30 minutes
  */
-export default function sumTimes(initialTime: string, addTime: string): string {
+export default function sumTimes(
+  initialTime: string,
+  addTime: string | number,
+): string {
   const inititalHour = Number(initialTime.split(':')[0])
   const inititalMinutes = Number(initialTime.split(':')[1])
   let minutes = 0
