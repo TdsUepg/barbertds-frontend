@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useMemo } from 'react'
 import type { ReactElement } from 'react'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
@@ -17,12 +17,53 @@ import {
   AppointmentContext,
   AppointmentContextType,
 } from 'contexts/AppointmentContext'
+import CurrencyInput from 'components/CurrencyMask'
 
 type EditServiceInput = {
   iconName: Icons
   name: string
   value: number
   serviceTime: string
+}
+
+function parseValueToNumber(value: string): number {
+  let parsedValue = value.split('$')[1]
+
+  parsedValue = parsedValue.replaceAll(/\./g, '')
+
+  const isDecimalValue = /\,/g.test(value)
+
+  if (isDecimalValue) {
+    const parsedValueSplitted = parsedValue.split(',')
+
+    if (parsedValueSplitted[1].length === 1) {
+      parsedValueSplitted[1] = parsedValueSplitted[1].concat('0')
+    }
+
+    parsedValue = parsedValueSplitted[0] + parsedValueSplitted[1]
+  } else {
+    parsedValue = parsedValue.concat('00')
+  }
+
+  return Number(parsedValue)
+}
+
+function parseValueToString(value: number | undefined): string {
+  if (!value) return '0,00'
+
+  let parsedValue = String(value / 100).replace('.', ',')
+  const integerPart = parsedValue.split(',')[0]
+  const decimalPart = parsedValue.split(',')[1]
+
+  if (decimalPart && decimalPart.length === 1) {
+    parsedValue = integerPart + ',' + decimalPart.concat('0')
+  } else if (!decimalPart) {
+    parsedValue = integerPart + ',00'
+  } else {
+    parsedValue = integerPart + ',' + decimalPart
+  }
+
+  return parsedValue
 }
 
 export default function Edit(): ReactElement {
@@ -34,14 +75,20 @@ export default function Edit(): ReactElement {
   const [serviceTime, setServiceTime] = useState<Option>()
   const [selectedIcon, setSelectedIcon] = useState(service?.iconName)
 
+  const price = useMemo(() => service?.value, [service])
+  const [inputValue, setInputValue] = useState(price)
+
   function onSubmit(data: EditServiceInput): void {
     setIsLoading(true)
-    const isDecimalValue = !!String(data.value).match(/(?:\.|\,)/g)
-    const parsedValue = String(data.value).replaceAll(/(?:\.|\,)/g, '')
+    let serviceValue = String(inputValue)
+
+    if (serviceValue === '' || typeof serviceValue === 'undefined') {
+      serviceValue = '0'
+    }
 
     const input = {
       ...data,
-      value: isDecimalValue ? Number(parsedValue) : parsedValue.concat('00'),
+      value: parseValueToNumber(serviceValue),
       iconName: selectedIcon,
     }
 
@@ -67,8 +114,12 @@ export default function Edit(): ReactElement {
     }
   }
 
-  function onSelectIcon(iconName: string): void {
+  function onSelectIcon(iconName: Icons): void {
     setSelectedIcon(iconName)
+  }
+
+  function onSetValue(value: string): void {
+    setInputValue(parseValueToNumber(value))
   }
 
   return (
@@ -170,23 +221,14 @@ export default function Edit(): ReactElement {
             </Grid>
 
             <Grid item xs={12} className="pb-4 !pl-0">
-              <Input
-                required
-                label="Preço"
-                type="decimal"
-                name="value"
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'Este campo é obrigatório',
-                  },
-                  shouldUnregister: true,
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">R$</InputAdornment>
-                  ),
-                }}
+              <CurrencyInput
+                placeholder={
+                  service?.value
+                    ? `R$ ${parseValueToString(service.value)}`
+                    : undefined
+                }
+                inputmode="text"
+                onSetValue={onSetValue}
               />
             </Grid>
 

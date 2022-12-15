@@ -25,6 +25,7 @@ import sumTimes from 'utils/sumTimes'
 import { format, formatISO } from 'date-fns'
 import { FormHelperText } from '@mui/material'
 import Icon, { Icons } from 'components/Icon'
+import formatDate from 'utils/formatDate'
 
 const placeholderImage =
   'https://firebasestorage.googleapis.com/v0/b/teste-cf0ac.appspot.com/o/placeholder.jpg?alt=media&token=a2bdeebe-2e17-4b28-9edb-1220ab549aa5'
@@ -121,7 +122,7 @@ const NewAppointment: React.FC = () => {
         barber: selectedBarber,
         service: service,
         client: user,
-        date: date?.toISOString().substring(0, 10),
+        date: format(date, 'yyyy-MM-dd'),
         endTime: sumTimes(data.startTime, service.serviceTime),
       }
 

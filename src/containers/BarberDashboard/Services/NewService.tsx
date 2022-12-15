@@ -13,6 +13,7 @@ import classNames from 'classnames'
 import Select from 'components/Select'
 import { Option } from '../types'
 import api from 'api'
+import CurrencyInput from 'components/CurrencyMask'
 
 type NewServiceInput = {
   icon: string
@@ -21,21 +22,47 @@ type NewServiceInput = {
   serviceTime: string
 }
 
+function parseValue(value: string): number {
+  let parsedValue = value.split('$')[1]
+
+  parsedValue = parsedValue.replaceAll(/\./g, '')
+
+  const isDecimalValue = /\,/g.test(value)
+
+  if (isDecimalValue) {
+    const parsedValueSplitted = parsedValue.split(',')
+
+    if (parsedValueSplitted[1].length === 1) {
+      parsedValueSplitted[1] = parsedValueSplitted[1].concat('0')
+    }
+
+    parsedValue = parsedValueSplitted[0] + parsedValueSplitted[1]
+  } else {
+    parsedValue = parsedValue.concat('00')
+  }
+
+  return Number(parsedValue)
+}
+
 export default function NewService(): ReactElement {
   const snackbar = useSnackbar()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [serviceTime, setServiceTime] = useState<Option>()
   const [selectedIcon, setSelectedIcon] = useState('')
+  const [inputValue, setInputValue] = useState('')
 
   function onSubmit(data: NewServiceInput): void {
     setIsLoading(true)
-    const isDecimalValue = !!String(data.value).match(/(?:\.|\,)/g)
-    const parsedValue = String(data.value).replaceAll(/(?:\.|\,)/g, '')
+    let serviceValue = inputValue
+
+    if (serviceValue === '' || typeof serviceValue === 'undefined') {
+      serviceValue = '0'
+    }
 
     const input = {
       ...data,
-      value: isDecimalValue ? Number(parsedValue) : parsedValue.concat('00'),
+      value: parseValue(serviceValue),
       iconName: selectedIcon,
     }
 
@@ -61,6 +88,10 @@ export default function NewService(): ReactElement {
 
   function onSelectIcon(iconName: string): void {
     setSelectedIcon(iconName)
+  }
+
+  function onSetValue(value: string): void {
+    setInputValue(value)
   }
 
   return (
@@ -155,24 +186,7 @@ export default function NewService(): ReactElement {
             </Grid>
 
             <Grid item xs={12} className="pb-4 !pl-0">
-              <Input
-                required
-                label="Preço"
-                type="decimal"
-                name="value"
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'Este campo é obrigatório',
-                  },
-                  shouldUnregister: true,
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">R$</InputAdornment>
-                  ),
-                }}
-              />
+              <CurrencyInput inputmode="text" onSetValue={onSetValue} />
             </Grid>
 
             <Grid item xs={12} className="pb-4 !pl-0">
